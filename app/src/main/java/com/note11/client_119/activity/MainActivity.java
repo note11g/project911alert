@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.note11.client_119.R;
 import com.note11.client_119.databinding.ActivityMainBinding;
 import com.note11.client_119.util.GpsInfo;
+import com.skt.Tmap.TMapView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,25 +30,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        tvLatitude = binding.textView1;
-        tvLongitude = binding.textView2;
-        tvDistance = binding.textView3;
-        btn = binding.btnMainLoad;
 
-        btn.setOnClickListener(v -> {
-            gps = new GpsInfo(MainActivity.this);
+        TMapView tmapview = new TMapView(this);
+        tmapview.setSKTMapApiKey("l7xxaede1cbc3d2e43569b3e4d9abfb76430");
 
-            if (gps.isGetLocation()) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-                Location distance = gps.getLocation();
-//                    double speed = gps.onLocationChanged();
-                tvLatitude.setText(String.valueOf(latitude));
-                tvLongitude.setText(String.valueOf(longitude));
-                tvDistance.setText(String.valueOf(distance));
-            } else
-                gps.showSettingAlert();
-        }); // end of setOnClickListener
+//        tvLatitude = binding.textView1;
+//        tvLongitude = binding.textView2;
+//        tvDistance = binding.textView3;
+//        btn = binding.btnMainLoad;
+//
+//        btn.setOnClickListener(v -> {
+//            gps = new GpsInfo(MainActivity.this);
+//
+//            if (gps.isGetLocation()) {
+//                double latitude = gps.getLatitude();
+//                double longitude = gps.getLongitude();
+//                Location distance = gps.getLocation();
+////                    double speed = gps.onLocationChanged();
+//                tvLatitude.setText(String.valueOf(latitude));
+//                tvLongitude.setText(String.valueOf(longitude));
+//                tvDistance.setText(String.valueOf(distance));
+//            } else
+//                gps.showSettingAlert();
+//        }); // end of setOnClickListener
     } // end of onCreate
 
 
