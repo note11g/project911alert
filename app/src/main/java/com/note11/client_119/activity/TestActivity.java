@@ -26,6 +26,7 @@ public class TestActivity extends AppCompatActivity {
 
         LinearLayout linearLayoutTmap = (LinearLayout)findViewById(R.id.linearLayoutTmap);
         TMapView tMapView = new TMapView(this);
+        linearLayoutTmap.addView( tMapView );
 
         tMapView.setSKTMapApiKey( "l7xxaede1cbc3d2e43569b3e4d9abfb76430" );
 
@@ -39,7 +40,6 @@ public class TestActivity extends AppCompatActivity {
             //거기서 distance값이 존재할 것 같음.
             //잘 빼보시길(아마 xml파서 써야할 것 같음.)
             //TODO doc에서 총 거리 가져오기
-            
         });
 
 
