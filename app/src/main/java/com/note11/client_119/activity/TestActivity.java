@@ -34,7 +34,13 @@ public class TestActivity extends AppCompatActivity {
         TMapPoint startpoint = new TMapPoint(37.570841, 126.985302);
         TMapPoint endpoint = new TMapPoint(37.570841, 126.985302);
 
-        tmapdata.findPathDataAll(startpoint, endpoint, doc -> Log.d("xml", doc.toString()));
+        tmapdata.findPathDataAll(startpoint, endpoint, doc -> {
+            //doc가 Document타입의 xml 문서임.
+            //거기서 distance값이 존재할 것 같음.
+            //잘 빼보시길(아마 xml파서 써야할 것 같음.)
+            //TODO doc에서 총 거리 가져오기
+            
+        });
 
 
     }
