@@ -8,6 +8,14 @@
         <variable
             name="nowLocation"
             type="String" />
+
+        <variable
+            name="distance"
+            type="String" />
+
+        <variable
+            name="isComing"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +28,9 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{isComing}"
+            android:textColor="@color/materialRed"
+            android:textSize="32sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,11 +41,21 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{nowLocation}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1"
             app:layout_constraintBottom_toTopOf="@id/textView3"
             app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@={distance, default=`distance`}"
+            app:layout_constraintBottom_toTopOf="@+id/textView1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -57,5 +78,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+        <Button
+            android:id="@+id/btn_main_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="finish"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_main_load" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

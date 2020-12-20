@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,11 @@ import com.note11.client_119.Define;
 import com.note11.client_119.R;
 import com.note11.client_119.Thread_Distance;
 import com.note11.client_119.databinding.ActivityMainBinding;
+import com.note11.client_119.util.GetDistance;
+import com.note11.client_119.util.GetFirebase;
+import com.note11.client_119.util.GpsCache;
 import com.note11.client_119.util.GpsInfo;
+import com.note11.client_119.util.GpsModel;
 import com.skt.Tmap.TMapView;
 
 import java.util.Map;
@@ -57,12 +62,21 @@ public class MainActivity extends AppCompatActivity {
             double longitude = location.getLongitude(); //경도
             double latitude = location.getLatitude();   //위도
 
-//            Define.ins().plongitude = longitude;
-//            Define.ins().platitude = latitude;
-//            cThread_Distance.start();
-            Toast.makeText(MainActivity.this, (int)(longitude*1000000)%100+"", Toast.LENGTH_SHORT).show();
+            try {
+                Long nowDis = GetDistance.getDistanceForMe(MainActivity.this, new GpsModel(longitude, latitude, 0L));
+                binding.setNowLocation("서비스 상태 : 실행중");
+                binding.setDistance("현재 구급차와의 거리 : "+nowDis+"m");
+                if(GpsCache.getGps(MainActivity.this).getLongitude()==0.0){
+                    binding.setDistance("현재 구급차와의 거리 : 위치 서비스 시작 됨");
+                }
+                if(nowDis<=200L){
+                    binding.setIsComing("응급차량 접근중");
+                }else{
+                    binding.setIsComing("");
+                }
+            }catch(Exception e){
 
-            //여기서 firebase 가져오기
+            }
         }
 
         public void onProviderDisabled(String provider) {
@@ -84,9 +98,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+
         cThread_Distance = new Thread_Distance(this);
 
         binding.btnMainLoad.setOnClickListener(v->startGPSService());
+        binding.btnMainEnd.setOnClickListener(v->{
+            mLM.removeUpdates(mLocationListener);
+            GpsCache.clear(this);
+            Toast.makeText(MainActivity.this, "finished", Toast.LENGTH_SHORT).show();
+            binding.setDistance("현재 구급차와의 거리 : 실행중이 아님");
+            binding.setNowLocation("서비스 상태 : 정지");
+            binding.setIsComing("");
+        });
 //        TMapView tmapview = new TMapView(this);
 //        tmapview.setSKTMapApiKey("l7xxaede1cbc3d2e43569b3e4d9abfb76430");
 
@@ -106,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             mLM.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     2000, 2, mLocationListener);
+            GetFirebase.getOnRTDB(MainActivity.this);
         } catch (Exception e) {
             Toast.makeText(this, "위치 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show();
             mLM.removeUpdates(mLocationListener);//자원해제
@@ -147,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
+
+
 
 //    private void getDataOnRTDB(Context context){
 //        mPostReference = FirebaseDatabase.getInstance().getReference("/list/");
